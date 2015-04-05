@@ -368,6 +368,70 @@ def transter_to_gpio_control():
         }
 	return render_template('gpio_control.html',**templateData)
 
+@app.route("/gpiout0_state",methods=['GET','POST'])
+def gpiout0_state():
+
+         import subprocess
+     
+         gpiout0_state=request.form['state0']
+         subprocess.call(['./control_gpiout0.sh',gpiout0_state],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         cmd=subprocess.Popen(['./cat_gpio.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         out,err=cmd.communicate()
+         templateData={
+
+            'result' : out
+        
+         }
+         return render_template('gpio_control.html',**templateData)
+
+@app.route("/gpiout1_state",methods=['GET','POST'])
+def gpiout1_state():
+
+         import subprocess
+
+         gpiout1_state=request.form['state1']
+         subprocess.call(['./control_gpiout1.sh',gpiout1_state],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         cmd=subprocess.Popen(['./cat_gpio.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         out,err=cmd.communicate()
+         templateData={
+
+            'result' : out
+
+         }
+         return render_template('gpio_control.html',**templateData)
+
+@app.route("/gpiout2_state",methods=['GET','POST'])
+def gpiout2_state():
+
+         import subprocess
+
+         gpiout2_state=request.form['state2']
+         subprocess.call(['./control_gpiout2.sh',gpiout2_state],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         cmd=subprocess.Popen(['./cat_gpio.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         out,err=cmd.communicate()
+         templateData={
+
+            'result' : out
+
+         }
+         return render_template('gpio_control.html',**templateData)
+
+@app.route("/gpiout3_state",methods=['GET','POST'])
+def gpiout3_state():
+
+         import subprocess
+
+         gpiout3_state=request.form['state3']
+         subprocess.call(['./control_gpiout3.sh',gpiout3_state],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         cmd=subprocess.Popen(['./cat_gpio.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         out,err=cmd.communicate()
+         templateData={
+
+            'result' : out
+
+         }
+         return render_template('gpio_control.html',**templateData)
+
 @app.route("/transter_to_WIFI_html",methods=['GET','POST'])
 def search_SSID():
 
@@ -378,4 +442,4 @@ def connect_WIFI():
     return send_from_directory('static/report/flexmonkey/html','test.html')
 
 if __name__=="__main__":
-   app.run(host='192.168.10.128',port=1300,debug=True)
+   app.run(host='172.16.51.106',port=1300,debug=True)

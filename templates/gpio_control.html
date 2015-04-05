@@ -3,6 +3,48 @@
      <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
   </head>
   <body class="content">
+     <h3>State</h3>
+     <h3>====================================================</h3>
      <h1>{{ result | nl2br }}</h1>
+
+     <h3>Control</h3>
+     <h3>====================================================</h3>
+
+     <form action=gpiout0_state method="post">
+        <h1>GPIOUT0:
+           <input type="radio" name="state0" value="low">Low
+           <input type="radio" name="state0" value="high">High
+           <input type="radio" name="state0" value="default" checked="true">Default
+           <input type="submit" value="update">
+        </h1>
+     </form>
+   
+     <form action=gpiout1_state name="gpio1_state "method="post">
+        <h1>GPIOUT1:
+           <input type="radio" name="state1" value="low">Low
+           <input type="radio" name="state1" value="high">High
+           <input type="radio" name="state1" value="default" checked="true">Default 
+           <input type="submit" value="update">
+        </h1>
+     </form>
+
+     <form action=gpiout2_state name="gpio2_state" method="post">
+        <h1>GPIOUT2:
+           <input type="radio" name="state2" value="low">Low
+           <input type="radio" name="state2" value="high">High
+           <input type="radio" name="state2" value="default" checked="true">Default
+	   <input type="submit" value="update">
+        </h1>
+     </form>
+ 
+     <form action=gpiout3_state name="gpio3_state "method="post">
+        <h1>GPIOUT3:
+           <input type="radio" name="state3" value="low">Low
+           <input type="radio" name="state3" value="high">High
+           <input type="radio" name="state3" value="default" checked="true">Default
+	   <input type="submit" value="update">
+        </h1>
+     </form> 
+
   </body>
 </html>
