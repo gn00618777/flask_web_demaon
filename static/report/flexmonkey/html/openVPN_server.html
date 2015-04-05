@@ -1,0 +1,42 @@
+<html>
+   <head>
+   <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
+   </head>
+   <body class="content">
+      <h1>OpenVpn-Server</h1>
+      <form name="openvpn_form" action=start_openVPN_server method="post" onsubmit="return check()">
+         <table border="1">
+            <tr>
+               <td bgcolor="#abbdcb" class="hdrl">Start ovenVPN server</td>
+               <td>
+                   <input type="checkbox" value="start" name="selection"></input>
+               </td>
+            </tr>
+            <tr>
+               <td bgcolor="#abbdcb" class="hdrl">IP Domain</td>
+               <td>
+                   <select name="domain_select">
+                      <option value="10_8">10.8.0.0</option>
+                      <option value="192_168">192.168.30.0</option>
+                   </select>
+               </td>
+            </tr>
+            <tr>
+                <td bgcolor="#abbdcb" class="hdrl">Maximum Clients</td>
+                <td>
+                   <select name="clients_num_select">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                   </select>
+               </td>
+            </tr>
+         </table>
+         <p>
+            <input type="submit" value="Start">
+            <input type="reset" value="Reset">
+         </p>
+      </form>
+      <script src="/static/js/start_server_judge.js" type="text/javascript"></script>
+   </body>
+</html>

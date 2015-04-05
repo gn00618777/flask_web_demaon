@@ -1,0 +1,22 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css"/>
+      <script type="text/javascript" src="/static/js/check_checkbox.js"></script>
+   </head>
+   <body class="content">
+      <h1>PPP-Accounts</h1>
+      <form action=remove_accounts method="post" onsubmit="return check();">
+         <table border="1">
+            <tr><td bgcolor="#abbdcb" class="hdrl">Account</td><td bgcolor="#abbdcb" class="hdrl">Server Name</td><td bgcolor="#abbdcb" class="hdrl">Password</td><td bgcolor="#abbdcb" class="hdrl">Allows IP</td></tr>
+<tr><td class="hdrl"><input type="checkbox" value="Bernie-PPTP" name="account">Bernie</input></td><td class="hdrl"><center>PPTP</center></td><td class="hdrl"><center>1234567</center></td><td class="hdrl">Anyone</td></tr>
+         </table>
+         <p><input type="submit" value="Remove Account"></p>
+      </form>
+      <form action=add_new_account method="post">
+         <input type="submit" value="Add New Account">
+      </form>
+      <form action=apply_to_pptp_server method="post">
+         <input type="submit" value="Apply_to_Server">
+      </form>
+   </body>
+</html>

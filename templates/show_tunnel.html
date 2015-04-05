@@ -1,0 +1,18 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
+   </head>
+   <body class="content">
+      <h1 id="tunnel_label">{{result}}</h1>
+      <form name="connect_control_form" action="connect_to_server_with" method="post" onsubmit="return fcheck()">
+         <input type="submit" value="Connect to server with">
+         <input type="text" name="tunnel_name_to_be_connect" id="tunnel_name_to_be_connect"></input>
+      </form>
+      <form name="connect_control_form1" action="disconnect_from_server" method="post" onsubmit="return fcheck1()">
+          <input type="submit" value="Disconnect from server">
+          <input type="text" name="tunnel_name_to_be_disconnect" id="tunnel_name_to_be_disconnect"></input>
+      </form>
+      <script src="static/js/text_check.js" type="text/javascript"></script>
+      <script src="static/js/text_check1.js" type="text/javascript"></script>
+   </body>
+</html>

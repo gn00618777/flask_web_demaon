@@ -1,0 +1,37 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css"/>
+      <script src="/static/js/form_check.js" type="text/javascript"></script>
+   </head>
+   <body class="content">
+   <h1>Edit PPTP Tunnel</h1>
+      <form name="tunnel_table" action="pptp_client" method="post" onsubmit="return check()">
+        <table border="1">
+           <tr>
+               <td bgcolor="#abbdcb" class="hdrl">Tunnel Name</td>
+             <td><input type="text" name="tunnel_name" id="tunnel_name"></td>
+           </tr>
+           <tr>
+               <td bgcolor="#abbdcb" class="hdrl">Server IP</td>
+             <td><input type="text" name="server_ip" id="server_ip"></td>
+           </tr>
+           <tr>
+              <td bgcolor="#abbdcb" class="hdrl">Server Name</td>
+               <td><input type="text" name="server_name" id="server_name"></td>
+           </tr>
+           <tr>
+               <td bgcolor="#abbdcb" class="hdrl">Login as User</td>
+             <td><input type="text" name="user_name" id="user_name"></td>
+           </tr>
+           <tr>
+               <td bgcolor="#abbdcb" class="hdrl">Login with Password</td>
+               <td><input type="PASSWORD" name="user_password" id=user_password></td>
+           </tr>
+        </table>
+        <p>
+           <input type="submit" value="Save">
+           <input type="reset" value="Reset">
+        </p>
+     </form>
+   </body>
+</html>

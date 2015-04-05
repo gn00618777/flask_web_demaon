@@ -1,0 +1,13 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css"/>
+   </head>
+   <body class="content">
+      <h1 id="list_label">{{ result }}</h1>
+      <form name="remove_html_form" action=button_to_remove_tunnel method="post" onsubmit="return rcheck()">
+         <input type="submit" value="Remove">
+         <input type="text" name="tunnel_be_remove" id="tunnel_be_remove"></input>
+      </form>
+      <script src="/static/js/remove_html_check.js" type="text/javascript"></script>
+   </body>
+</html>

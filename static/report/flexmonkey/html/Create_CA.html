@@ -1,0 +1,49 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css"/>
+   </head>
+   <body class="content">
+      <h1>Create Certificate Authority</h1>
+      <form>
+         <table border="1">
+           <tr>
+             <td bgcolor="#abbdcb" class="hdrl">Key Size</td>
+             <td>
+               <select name="encryption_selection">
+                  <option value="1024">1024</option>
+                  <option value="2048">2048</option>
+               </select>
+             </td>
+           </tr>
+           <tr>
+            <td bgcolor="#abbdcb" class="hdrl">Expiration time of CA key</td>
+            <td><input type="text" name="expiration_time"></input></td>
+           </tr>
+           <tr>
+             <td bgcolor="#abbdcb" class="hdrl">Contry</td>
+             <td><input type="text" name="contry"></input></td>
+           </tr>
+           <tr>
+             <td bgcolor="#abbdcb" class="hdrl">Province</td>
+             <td><input type="text" name="province"></input></td>
+           </tr>
+           <tr>
+               <td bgcolor="#abbdcb" class="hdrl">City</td>
+               <td><input type="text" class="hdrl"></input></td>
+           </tr>
+           <tr>
+            <td bgcolor="#abbdcb" class="hdrl">Organization</td>
+            <td><input type="text" name="organization"></input></td>
+           </tr>
+           <tr>
+            <td bgcolor="#abbdcb" class="hdrl">Email</td>
+            <td><input type="text" name="email"></input></td>
+           <tr>
+        </table>
+        <p>
+         <input type="submit" value="Save">
+         <input type="reset" value="Reset">
+        </p>
+      </form>
+   </body>
+</html>

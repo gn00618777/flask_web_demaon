@@ -1,0 +1,16 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
+      <script type="text/javascript" src="/static/js/WIFI_check.js"></script>
+   </head>
+   <body class="content">
+      <form action=search_SSID method="post">
+         <input type="submit" value="Search SSID">
+      </form>
+      <form action=connect_WIFI method="post" onsubmit="return check();">
+          SSID: <input type="text" name="SSID_text">
+          Password: <input type="password" name="password_text">
+          <input type="submit" value="Connect">
+      </form>
+   </body>
+</html>

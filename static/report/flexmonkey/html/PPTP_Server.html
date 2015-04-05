@@ -1,0 +1,30 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css"/>
+      <script type="text/javascript" src="/static/js/pptp_server_check.js"></script>
+   </head>
+   <body class="content">
+      <h1>PPTP Server Options</h1>
+      <form name="pptp_server_form_table" method="post" action=start_pptp_server onsubmit="return check()">
+        <table border="1">
+         <tr>
+            <td bgcolor="#abbdcb" class="hdrl">Server Name</td>
+            <td><input type="text" name="server_name"></input></td>
+         </tr>
+         <tr>
+            <td bgcolor="#abbdcb" class="hdrl">IP Address for Server</td>
+            <td><input type="text" name="server_ip"></input></td>
+         </tr>
+         <tr>
+             <td bgcolor="#abbdcb" class="hdrl">IP Address to allocate</td>
+             <td><input type="text" name="clients_ip"></input></td>
+         </tr>
+      </table>
+      <p>
+        <input type="submit" value="Start">
+        <input type="reset" value="Reset">
+      </p>
+      </form> 
+   </body>
+
+</html>

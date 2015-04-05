@@ -1,0 +1,23 @@
+<html>
+   <head>
+     <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
+     <script type="text/javascript" src="/static/js/selectcheck.js"></script>
+     <script type="text/javascript" src="/static/js/selectcheck1.js"></script>
+   </head>
+   <body class="content">
+      <h1># You can select one of ovpn files to connect to server</h1>
+      <form  action=connect_to_server_with_ovpn method="post" onsubmit="return check();">
+         <p>
+           <input type="submit" value="Connect to server with">
+           <select name="ovpn_files">
+              <option value="0" selected="selected">&nbsp</option>
+           </select>
+     </form>
+     <form action=remove_ovpn_file method="post" onsubmit="return cneck1();">
+        <input type="submit" value="Remove ovpn file">
+        <select name="ovpn_files1">
+               <option value="0" selected="selected">&nbsp</option>
+        </select>
+         </form>
+   </body>
+</html>
