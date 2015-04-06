@@ -1,0 +1,20 @@
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="/static/css/normal.css">
+   </head>
+   <body class="content">
+      <form action=baud_rate_rs_select method="post">
+         <h1>Baud Rate</h1>
+         <input type="radio" name="rate" checked="true" value="9600">9600
+         <input type="radio" name="rate" value="115200">115200
+         </br>
+         <h1>Type</h1>
+         <input type="radio" name="rs_type" checked="true" value="rs232">RS232(Full)
+         <input type="radio" name="rs_type" value="rs422">RS422(Full)
+         <h1>Content</h1>
+         <textarea id="content" name="content" rows="3"></textarea>
+         </br>
+         <input type="submit" value="Transmit">        
+      </form>
+   </body>
+</html>
