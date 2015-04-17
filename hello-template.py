@@ -9,6 +9,8 @@ app=Flask(__name__)
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 app.jinja_env.filters['nl2br']=nl2br
 
+receive_data=""
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1 )[1] in ALLOWED_EXTENSIONS
 
@@ -435,7 +437,13 @@ def gpiout3_state():
 @app.route("/serial_type_select",methods=['GET','POST'])
 def serial_type_select():
 
-         return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
+         sender_receive_select=request.form['type']
+  
+         if sender_receive_select == "sender":
+            return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
+
+         else:
+            return render_template('Receive_serial.html')
 
 @app.route("/baud_rate_rs_select", methods=['GET','POST'])
 def baud_rate_rs_select():
@@ -455,6 +463,35 @@ def baud_rate_rs_select():
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
+@app.route("/Receive_rs_data", methods=['GET','POST'])
+def Receive_rs_data():
+
+    import serial
+    import subprocess
+    from time import sleep
+    
+    rate=request.form['rate']
+    rs_type=request.form['rs_type']
+    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=0)
+    subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
+  
+   
+    while True:   
+       data=ser.read(9999)
+       if len(data) > 0:
+
+          if data == "^":
+             return send_from_directory('static/report/flexmonkey/html','test.html')
+          global receive_data     
+          receive_data=receive_data+data
+          sleep(0.5)
+          break     
+    templateData={
+      'result' : receive_data
+   }  
+   
+    return render_template('Receive_serial.html',**templateData) 
+   
 @app.route("/transter_to_WIFI_html",methods=['GET','POST'])
 def search_SSID():
 
