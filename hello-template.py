@@ -341,6 +341,7 @@ def upload_file():
         import os
         import subprocess
 
+	subprocess.call(['./if_create_ovpn_files_directory.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         file = request.files['file']
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
