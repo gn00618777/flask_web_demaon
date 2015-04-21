@@ -1,9 +1,9 @@
 #!/bin/bash
 
-str=`ps aux | grep "openvpn" | grep "openvpn \n-\n-config"`
+str=`ps aux | grep "openvpn" | grep -c "openvpn --config"`
 
 
-if [ "$str" == "" ]; then
+if [ "$str" == "1" ]; then
    echo "0"
 else
    echo "1"
