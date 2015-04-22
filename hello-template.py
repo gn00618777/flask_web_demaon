@@ -32,6 +32,9 @@ def transter_to_interfaces():
 
 @app.route("/<path:filename>")
 def showpage(filename):
+    import subprocess
+    
+    subprocess.call(['./create_needed_file_directory.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     return send_from_directory('static/report/flexmonkey/html',filename)
 
 @app.route("/start_pptp_server",methods=['GET','POST'])
@@ -341,7 +344,6 @@ def upload_file():
         import os
         import subprocess
 
-	subprocess.call(['./if_create_ovpn_files_directory.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         file = request.files['file']
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
