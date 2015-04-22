@@ -24,7 +24,6 @@ do
     ./pkitool client$i
 done
 
-test -d /flask_web_demaon/static/download/ || mkdir -p /flask_web_demaon/static/download/client_configs/
 # package the requirements of client
 cd /etc/openvpn/easy-rsa/keys
 for (( i=1 ; i<=$1 ; i=i+1))
