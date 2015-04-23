@@ -458,8 +458,8 @@ def baud_rate_rs_select():
     content=request.form.get("content")
     ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=3.0)
     rs_type=request.form['rs_type']
-    
-    subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)  
+
+    subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
   
     ser.write(content)
     ser.close()
