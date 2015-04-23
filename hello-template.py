@@ -456,13 +456,16 @@ def baud_rate_rs_select():
  
     rate=request.form['rate']
     content=request.form.get("content")
-    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=3.0)
+    ser1 = serial.Serial("/dev/ttyO1", baudrate=rate, timeout=3.0)
+    ser2 = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=3.0)
     rs_type=request.form['rs_type']
 
     subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
   
-    ser.write(content)
-    ser.close()
+    ser1.write(content)
+    ser1.close()
+    ser2.write(content)
+    ser2.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
