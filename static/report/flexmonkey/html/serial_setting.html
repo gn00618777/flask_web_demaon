@@ -4,9 +4,20 @@
    </head>
    <body class="content">
       <form action=serial_type_select method="post">
-         <input type="radio" name="type" value="sender">Sender
+         <h1>Serial Type</h1>
+         <input type="radio" name="type" checked="true" value="sender">Sender
          <input type="radio" name="type" value="receive">Receiver
-         <input type="submit" value="Select">
+         <br/>
+         <h1>Type Selection</h1>
+         <input type="radio" name="rs_type" checked="true" value="rs232">RS232
+         <input type="radio" name="rs_type" value="rs422">RS422
+         <br/>
+         <h1>Baud Rate</h1>
+         <input type="radio" name="baud_rate" checked="true" value="9600">9600
+         <input type="radio" name="baud_rate" value="115200">115200
+         <br/>
+         <br/>
+         <input type="submit" value="OK">
       </form>
    </body>
 </html>

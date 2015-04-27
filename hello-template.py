@@ -1,4 +1,5 @@
-from flask import Flask,send_from_directory,request,render_template
+import serial
+from flask import Flask,send_from_directory,request,render_template,redirect
 from filter import nl2br
 from werkzeug import secure_filename
 
@@ -439,62 +440,36 @@ def gpiout3_state():
 
 @app.route("/serial_type_select",methods=['GET','POST'])
 def serial_type_select():
-
+         
+         import subprocess
+     
          sender_receive_select=request.form['type']
-  
+         rs_type = request.form['rs_type']
+         baud_rate = request.form['baud_rate']
+
+         subprocess.call(['./write_baud_rate_to_file.sh',baud_rate],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+         subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+     
          if sender_receive_select == "sender":
             return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
          else:
-            return render_template('Receive_serial.html')
+            return redirect('http://172.16.51.22:1400')
 
-@app.route("/baud_rate_rs_select", methods=['GET','POST'])
+@app.route("/taransmit_to_serial", methods=['GET','POST'])
 def baud_rate_rs_select():
 
-    import serial
-    import subprocess
- 
-    rate=request.form['rate']
-    content=request.form.get("content")
-    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=3.0)
-    rs_type=request.form['rs_type']
+    fread = open('baud_rate','r')
 
-    subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-  
+    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=0)
+    content=request.form.get("content")
+    
     ser.write(content)
     ser.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
-
-@app.route("/Receive_rs_data", methods=['GET','POST'])
-def Receive_rs_data():
-
-    import serial
-    import subprocess
-    from time import sleep
-    
-    rate=request.form['rate']
-    rs_type=request.form['rs_type']
-    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=0)
-    subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
   
-   
-    while True:   
-       data=ser.read(9999)
-       if len(data) > 0:
-
-          if data == "^":
-             return send_from_directory('static/report/flexmonkey/html','test.html')
-          global receive_data     
-          receive_data=receive_data+data
-          sleep(0.5)
-          break     
-    templateData={
-      'result' : receive_data
-   }  
-   
-    return render_template('Receive_serial.html',**templateData) 
-   
 @app.route("/transter_to_WIFI_html",methods=['GET','POST'])
 def search_SSID():
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-state=`cat /sys/kernel/debug/gpio | grep "gpio-204" | grep "hi"`
+
 
 if [  "$1" == "rs232" ]; then
 

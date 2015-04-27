@@ -1,31 +1,35 @@
 import time
-from flask import Flask, render_template
+import serial
+from flask import Flask, render_template, request
 from flask.ext.socketio import SocketIO, emit
 from threading import Thread 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-thread = None
 
 def background_thread():
-    count = 0
-    for i in range(5):
-        time.sleep(10)
-        count += 1
-        socketio.emit('my response',{'data':'Server generated event','count':count},namespace='/test')
+    
+    fread = open('baud_rate','r')
+
+    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=3.0)
+    while True:
+        data = ser.read()
+        if data == "^":
+           socketio.emit('my response',{'data':'<br><br><h1>Stop Receive!</h1>'},namespace='/test') 
+           break
+        if len(data) > 0:
+           socketio.emit('my response',{'data':data},namespace='/test')
 
 @app.route('/')
 def into_receiver():
-    global thread
-    if thread is None:
-       thread = Thread(target=background_thread)
-       thread.start()
+    thread = Thread(target=background_thread)
+    thread.start()
     return render_template('socketio_receive.html')
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    emit('my response', {'data':'Connected'})
+    emit('my response', {'data':'<h1>SocketIO Connected!</h1><br><br>'})
 
 @socketio.on('disconnect',namespace='/test')
 def test_distconnect():
