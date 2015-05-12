@@ -460,12 +460,15 @@ def serial_type_select():
 @app.route("/taransmit_to_serial", methods=['GET','POST'])
 def baud_rate_rs_select():
 
+    import subprocess    
+
     fread = open('baud_rate','r')
 
     ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=0)
     content=request.form.get("content")
-    
+    subprocess.call(['./pull_rts_high.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ser.write(content)
+    subprocess.call(['./pull_rts_down.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
     ser.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
