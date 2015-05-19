@@ -455,6 +455,7 @@ def serial_type_select():
             return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
          else:
+            subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
             return redirect('http://172.16.51.22:1400')
 
 @app.route("/taransmit_to_serial", methods=['GET','POST'])
@@ -472,7 +473,7 @@ def baud_rate_rs_select():
     ser.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
-  
+
 @app.route("/transter_to_WIFI_html",methods=['GET','POST'])
 def search_SSID():
 

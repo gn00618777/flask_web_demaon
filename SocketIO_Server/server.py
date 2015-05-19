@@ -1,6 +1,6 @@
 import time
 import serial
-from flask import Flask, render_template, request
+from flask import Flask, render_template
 from flask.ext.socketio import SocketIO, emit
 from threading import Thread 
 
@@ -10,16 +10,21 @@ socketio = SocketIO(app)
 
 def background_thread():
     
+    count=0
     fread = open('baud_rate','r')
-
-    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=3.0)
+    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=1)
+ 
     while True:
         data = ser.read()
-        if data == "^":
-           socketio.emit('my response',{'data':'<br><br><h1>Stop Receive!</h1>'},namespace='/test') 
-           break
+   
         if len(data) > 0:
            socketio.emit('my response',{'data':data},namespace='/test')
+           count=0
+        else:
+           count=count+1
+           if count == 60:
+              socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
+              break
 
 @app.route('/')
 def into_receiver():
@@ -27,9 +32,6 @@ def into_receiver():
     thread.start()
     return render_template('socketio_receive.html')
 
-@socketio.on('connect', namespace='/test')
-def test_connect():
-    emit('my response', {'data':'<h1>SocketIO Connected!</h1><br><br>'})
 
 @socketio.on('disconnect',namespace='/test')
 def test_distconnect():
