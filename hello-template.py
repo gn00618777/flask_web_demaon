@@ -1,3 +1,4 @@
+import os
 import serial
 from flask import Flask,send_from_directory,request,render_template,redirect
 from filter import nl2br
@@ -9,8 +10,11 @@ app=Flask(__name__)
 
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 app.jinja_env.filters['nl2br']=nl2br
-
 receive_data=""
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1 )[1] in ALLOWED_EXTENSIONS
