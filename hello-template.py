@@ -10,7 +10,8 @@ app=Flask(__name__)
 
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 app.jinja_env.filters['nl2br']=nl2br
-receive_data=""
+
+baud_rate=0
 
 @app.route('/favicon.ico')
 def favicon():
@@ -446,12 +447,11 @@ def gpiout3_state():
 def serial_type_select():
          
          import subprocess
-     
+         global baud_rate
+
          sender_receive_select=request.form['type']
          rs_type = request.form['rs_type']
          baud_rate = request.form['baud_rate']
-
-         subprocess.call(['./write_baud_rate_to_file.sh',baud_rate],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
          subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
      
@@ -460,16 +460,15 @@ def serial_type_select():
 
          else:
             subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            return redirect('http://172.16.51.22:1400')
+            return redirect('http://172.16.51.22:1400/%s' %baud_rate)
 
 @app.route("/taransmit_to_serial", methods=['GET','POST'])
 def baud_rate_rs_select():
 
     import subprocess    
 
-    fread = open('baud_rate','r')
-
-    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=0)
+    ser = serial.Serial("/dev/ttyO2", baudrate=baud_rate, timeout=0)   
+   
     content=request.form.get("content")
     subprocess.call(['./pull_rts_high.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ser.write(content)

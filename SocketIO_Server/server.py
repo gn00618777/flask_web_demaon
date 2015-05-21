@@ -8,11 +8,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-def background_thread():
+def background_thread(rate):
     
     count=0
-    fread = open('baud_rate','r')
-    ser = serial.Serial("/dev/ttyO2", baudrate=fread.read(), timeout=1)
+
+    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=1)
  
     while True:
         data = ser.read()
@@ -26,9 +26,10 @@ def background_thread():
               socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
               break
 
-@app.route('/')
-def into_receiver():
-    thread = Thread(target=background_thread)
+@app.route('/<string:baudrate>')
+def into_receiver(baudrate):
+
+    thread = Thread(target=background_thread, args=(baudrate,))
     thread.start()
     return render_template('socketio_receive.html')
 
