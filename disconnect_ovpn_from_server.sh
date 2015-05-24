@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pid=`ps | grep "openvpn" | sed "s/t.*$//g" | sed "s/^.//g"`
+pid=`ps aux | grep "\bclient.ovpn\b" | sed "s/ [0-99]\..*$//g" | sed "s/root//g"`
 
 kill $pid

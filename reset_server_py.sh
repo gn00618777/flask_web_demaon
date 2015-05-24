@@ -6,6 +6,6 @@ kill $pid
 
 python /flask_web_demaon/SocketIO_Server/server.py &
 
-sleep 3
+sleep 2
 
 

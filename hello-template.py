@@ -278,8 +278,8 @@ def connect_to_server_with_ovpn():
     fdout=open("bernieout",'w')
     fderr=open("bernieerr",'w')
     cmd=subprocess.Popen(['./connect_server_with_ovpn.sh',ovpn_file],stdout=fdout,stderr=fderr)
-   
-    return render_template('openVPN_client_state.html')
+    subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    return redirect('http://192.168.30.1:1400/openvpn_connect_state')
 
 @app.route("/remove_ovpn_file",methods=['GET','POST'])
 def remove_ovpn_file():
@@ -287,19 +287,6 @@ def remove_ovpn_file():
     ovpn_files1=request.form['ovpn_files1']
     subprocess.call(['./remove_ovpn_file.sh',ovpn_files1],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     return send_from_directory('static/report/flexmonkey/html','connect_server_with_ovpn.html')
-
-@app.route("/update_connect_message", methods=['GET','POST'])
-def update_connect_message():
-    fdout=open('bernieout','r')
-    contentout=fdout.read()
-    templateData={
-
-      'result' : contentout
- 
-    }
-    fdout.close()
-    return render_template('openVPN_client_state.html',**templateData)
-
 
 @app.route("/disconnect_ovpn_from_server",methods=['GET','POST'])
 def disconnect_ovpn_from_server():
@@ -317,7 +304,8 @@ def direct_to_openVPN_client_state():
     if out == ('0\n',''):
        return send_from_directory('static/report/flexmonkey/html','connect_server_with_ovpn.html')
     else :
-        return render_template('openVPN_client_state.html')
+        subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        return redirect('http://192.168.30.1:1400/openvpn_connect_state')
 
 
 @app.route("/go_to_openVPN_connect_state_html",methods=['GET','POST'])
@@ -460,7 +448,7 @@ def serial_type_select():
 
          else:
             subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            return redirect('http://172.16.51.22:1400/%s' %baud_rate)
+            return redirect('http://192.168.30.1:1400/%s' %baud_rate)
 
 @app.route("/taransmit_to_serial", methods=['GET','POST'])
 def baud_rate_rs_select():
@@ -487,4 +475,4 @@ def connect_WIFI():
     return send_from_directory('static/report/flexmonkey/html','test.html')
 
 if __name__=="__main__":
-   app.run(host='172.16.51.106',port=1300,debug=True)
+   app.run(host='192.168.30.1',port=1300,debug=True)
