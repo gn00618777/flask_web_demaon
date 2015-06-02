@@ -11,20 +11,32 @@ socketio = SocketIO(app)
 def background_serial(rate):
 
     count=0
+    count1=0
 
-    ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=1)
+    ser = serial.Serial("/dev/ttyO1", baudrate=rate, timeout=1)
+    ser1 = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=1)
 
     while True:
         data = ser.read()
+        data1 = ser1.read()
 
         if len(data) > 0:
            socketio.emit('my response', {'data':data}, namespace='/test')
            count=0
         else:
-           count=count+1
-           if count == 60:
-              socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
-              break
+	   if count < 45: 
+              count = count + 1
+
+        if len(data1) > 0:
+           socketio.emit('my response', {'data':data1}, namespace='/test')
+           count1=0 
+        else:
+	   if count1 < 45:
+              count1 = count1 + 1   
+        
+        if count == 45 and count1 == 45:
+           socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
+           break
 
 def background_openvpn_connect_state():
 

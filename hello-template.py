@@ -441,8 +441,7 @@ def serial_type_select():
          rs_type = request.form['rs_type']
          baud_rate = request.form['baud_rate']
 
-         subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-     
+         subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
          if sender_receive_select == "sender":
             return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
@@ -455,13 +454,15 @@ def baud_rate_rs_select():
 
     import subprocess    
 
-    ser = serial.Serial("/dev/ttyO2", baudrate=baud_rate, timeout=0)   
-   
+    ser = serial.Serial("/dev/ttyO1", baudrate=baud_rate, timeout=0)   
+    ser1 = serial.Serial("/dev/ttyO2", baudrate=baud_rate, timeout=0)
     content=request.form.get("content")
     subprocess.call(['./pull_rts_high.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ser.write(content)
+    ser1.write(content)
     subprocess.call(['./pull_rts_down.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
     ser.close()
+    ser1.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
