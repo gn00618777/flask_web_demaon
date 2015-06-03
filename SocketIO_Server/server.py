@@ -8,35 +8,29 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-def background_serial(rate):
+def background_serial(port,rate):
 
     count=0
-    count1=0
 
-    ser = serial.Serial("/dev/ttyO1", baudrate=rate, timeout=1)
-    ser1 = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=1)
+    if port == "com1":
+       
+       ser = serial.Serial("/dev/ttyO2", baudrate=rate, timeout=1)
+    
+    else:
+
+       ser = serial.Serial("/dev/ttyO1",baudrate=rate, timeout=1)  
 
     while True:
         data = ser.read()
-        data1 = ser1.read()
 
         if len(data) > 0:
            socketio.emit('my response', {'data':data}, namespace='/test')
            count=0
         else:
-	   if count < 45: 
-              count = count + 1
-
-        if len(data1) > 0:
-           socketio.emit('my response', {'data':data1}, namespace='/test')
-           count1=0 
-        else:
-	   if count1 < 45:
-              count1 = count1 + 1   
-        
-        if count == 45 and count1 == 45:
-           socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
-           break
+           count = count + 1
+           if count == 60:
+              socketio.emit('my response',{'data': '<br><h2>This page is time out</h2>'},namespace='/test')
+              break
 
 def background_openvpn_connect_state():
 
@@ -55,13 +49,26 @@ def background_openvpn_connect_state():
 
 @app.route('/<string:argument>')
 def into_receiver(argument):
-
-    baud_rate=["9600","115200"]
-
-    if argument in baud_rate:
-       thread = Thread(target=background_serial, args=(argument,))
+   
+    if "com1" in argument and "9600" in argument:
+       thread = Thread(target=background_serial, args=("com1","9600",))
        thread.start()
        return render_template('socketio_receive.html')
+
+    if "com1" in argument and "115200" in argument:
+       thread = Thread(target=background_serial, args=("com1","115200",)) 
+       thread.start()
+       return render_template('socketio_receive.html')
+   
+    if "com2" in argument and "9600" in argument: 
+       thread = Thread(target=background_serial, args=("com2","9600",))
+       thread.start()
+       return render_template('socketio_receive.html')
+
+    if "com2" in argument and "115200" in argument:
+        thread = Thread(target=background_serial, args=("com2","115200",))
+        thread.start()
+        return render_template('socketio_receive.html')
 
     if argument == "openvpn_connect_state":
        thread = Thread(target=background_openvpn_connect_state)

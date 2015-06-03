@@ -11,7 +11,9 @@ app=Flask(__name__)
 app.config['UPLOAD_FOLDER']=UPLOAD_FOLDER
 app.jinja_env.filters['nl2br']=nl2br
 
+port=0
 baud_rate=0
+
 
 @app.route('/favicon.ico')
 def favicon():
@@ -436,33 +438,36 @@ def serial_type_select():
          
          import subprocess
          global baud_rate
+         global port
 
+         port = request.form['port']
          sender_receive_select=request.form['type']
          rs_type = request.form['rs_type']
          baud_rate = request.form['baud_rate']
 
-         subprocess.call(['./set_rs_type.sh',rs_type],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
+         subprocess.call(['./set_rs_type.sh', rs_type, port],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
          if sender_receive_select == "sender":
             return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
          else:
             subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-            return redirect('http://192.168.30.1:1400/%s' %baud_rate)
+            return redirect('http://192.168.30.1:1400/%s%s' %(baud_rate,port))
 
 @app.route("/taransmit_to_serial", methods=['GET','POST'])
 def baud_rate_rs_select():
 
     import subprocess    
+ 
+    if port == "com1":
+      ser = serial.Serial("/dev/ttyO2", baudrate=baud_rate, timeout=0) 
+    else:   
+      ser= serial.Serial("/dev/ttyO1", baudrate=baud_rate, timeout=0)
 
-    ser = serial.Serial("/dev/ttyO1", baudrate=baud_rate, timeout=0)   
-    ser1 = serial.Serial("/dev/ttyO2", baudrate=baud_rate, timeout=0)
     content=request.form.get("content")
-    subprocess.call(['./pull_rts_high.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    subprocess.call(['./pull_rts_high.sh', port],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ser.write(content)
-    ser1.write(content)
-    subprocess.call(['./pull_rts_down.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
+    subprocess.call(['./pull_rts_down.sh', port],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
     ser.close()
-    ser1.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
