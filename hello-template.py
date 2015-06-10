@@ -464,9 +464,7 @@ def baud_rate_rs_select():
       ser= serial.Serial("/dev/ttyO1", baudrate=baud_rate, timeout=0)
 
     content=request.form.get("content")
-    subprocess.call(['./pull_rts_high.sh', port],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     ser.write(content)
-    subprocess.call(['./pull_rts_down.sh', port],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
     ser.close()
 
     return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
