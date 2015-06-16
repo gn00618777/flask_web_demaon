@@ -4,7 +4,10 @@
    </head>
    <body class="content">
       <form action=taransmit_to_serial method="post">
-         <h1>Content</h1>
+         <h1>*COM: {{ port }}</h1>
+         <h1>*TYPE: {{ sender_receive_select }}</h1>
+         <h1>*MODE: {{ rs_type }}</h1>
+         <h1>*RATE: {{ baud_rate }}</h1>
          <textarea id="content" name="content" cols="100" rows="5"></textarea>
          </br>
          <input type="submit" value="Transmit">        

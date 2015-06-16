@@ -13,7 +13,8 @@ app.jinja_env.filters['nl2br']=nl2br
 
 port=0
 baud_rate=0
-
+rs_type=0
+sender_receive_select=0
 
 @app.route('/favicon.ico')
 def favicon():
@@ -439,11 +440,22 @@ def serial_type_select():
          import subprocess
          global baud_rate
          global port
+         global sender_receive_select
+         global rs_type 
 
          port = request.form['port']
          sender_receive_select=request.form['type']
          rs_type = request.form['rs_type']
          baud_rate = request.form['baud_rate']
+
+         templateData = {
+
+             'port' : port,
+             'sender_receive_select' : sender_receive_select,
+             'rs_type' : rs_type,
+             'baud_rate' : baud_rate,
+
+         }
 
          subprocess.call(['./set_rs_type.sh', rs_type, port],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
@@ -460,7 +472,7 @@ def serial_type_select():
             subprocess.call(['./stop_uart1_rs485'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
          if sender_receive_select == "sender":
-            return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
+            return render_template('Sender_serial.html', **templateData)
 
          else:
             subprocess.call(['./reset_server_py.sh'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -480,7 +492,16 @@ def baud_rate_rs_select():
     ser.write(content)
     ser.close()
 
-    return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
+    templateData = {
+
+       'port' : port,
+       'rs_type' : rs_type,
+       'sender_receive_select' : sender_receive_select,
+       'baud_rate' : baud_rate,
+
+    }
+
+    return render_template('Sender_serial.html', **templateData)
 
 @app.route("/transter_to_WIFI_html",methods=['GET','POST'])
 def search_SSID():
