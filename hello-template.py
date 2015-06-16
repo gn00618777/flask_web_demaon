@@ -445,7 +445,20 @@ def serial_type_select():
          rs_type = request.form['rs_type']
          baud_rate = request.form['baud_rate']
 
-         subprocess.call(['./set_rs_type.sh', rs_type, port],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
+         subprocess.call(['./set_rs_type.sh', rs_type, port],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+         if rs_type == "rs485" and port == "com1":
+            subprocess.call(['./start_uart2_rs485'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         
+         if rs_type == "rs485" and port == "com2":
+            subprocess.call(['./start_uart1_rs485'],stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
+
+         if rs_type != "rs485" and port == "com1":
+	    subprocess.call(['./stop_uart2_rs485'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+	 if rs_type != "rs485" and port == "com2":
+            subprocess.call(['./stop_uart1_rs485'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
          if sender_receive_select == "sender":
             return send_from_directory('static/report/flexmonkey/html','Sender_serial.html')
 
